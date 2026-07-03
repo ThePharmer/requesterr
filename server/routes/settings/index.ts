@@ -535,6 +535,49 @@ settingsRoutes.post(
       }
     }
 
+    const ownerNeedsPlex = target === 'plex';
+    try {
+      const owner = await getRepository(User).findOne({
+        where: { id: 1 },
+        select: {
+          id: true,
+          plexId: true,
+          jellyfinUserId: true,
+        },
+      });
+
+      if (!owner) {
+        return res.status(400).json({
+          error:
+            'Owner account (user id 1) was not found. Cannot switch media server.',
+        });
+      }
+
+      const ownerLinked = ownerNeedsPlex
+        ? owner.plexId != null
+        : owner.jellyfinUserId != null;
+
+      if (!ownerLinked) {
+        return res.status(400).json({
+          error: ownerNeedsPlex
+            ? 'Your owner account is not linked to a Plex account. Link it in Settings → Users → (owner) → Linked Accounts before switching, otherwise you will be locked out.'
+            : 'Your owner account is not linked to a Jellyfin/Emby account. Link it in Settings → Users → (owner) → Linked Accounts before switching, otherwise you will be locked out.',
+        });
+      }
+    } catch (e) {
+      logger.error(
+        'Failed to verify owner readiness before media server switch',
+        {
+          label: 'Settings',
+          errorMessage: (e as Error).message,
+        }
+      );
+      return next({
+        status: 500,
+        message: 'Failed to verify readiness before switching media server.',
+      });
+    }
+
     try {
       if (current === MediaServerType.PLEX) {
         const useEmby = target === 'emby';
