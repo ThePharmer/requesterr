@@ -1,0 +1,11 @@
+<svg width="198" height="170" viewBox="0 0 198 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(51,4)">
+<path d="M30 20 L81 48 L30 76 Z" fill="url(#au)" stroke="url(#au)" stroke-width="14" stroke-linejoin="round"/>
+<path d="M40 36 V62" stroke="#131928" stroke-width="10.5" stroke-linecap="round" fill="none"/>
+<path d="M40 49.5 C40 40.5, 47 37, 53.5 38.5" stroke="#131928" stroke-width="10.5" stroke-linecap="round" fill="none"/></g>
+<text x="99" y="140" fill="white" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="600" text-anchor="middle" dominant-baseline="middle">requesterr</text>
+<defs>
+<linearGradient id="au" x1="24" y1="14" x2="86" y2="84" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFDF6B"/><stop offset="1" stop-color="#F0A020"/>
+</linearGradient></defs>
+</svg>

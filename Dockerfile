@@ -46,6 +46,8 @@ RUN \
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store CYPRESS_INSTALL_BINARY=0 pnpm install --frozen-lockfile
 
+RUN node scripts/rebrand.mjs
+
 RUN pnpm build
 
 RUN rm -rf .next/cache
@@ -66,6 +68,10 @@ COPY --chown=node:node . .
 COPY --chown=node:node --from=prod-deps /app/node_modules ./node_modules
 COPY --chown=node:node --from=build /app/.next ./.next
 COPY --chown=node:node --from=build /app/dist ./dist
+
+# This stage copies public/ from the raw build context, not the build stage,
+# so branded assets must be applied here as well (script is idempotent).
+RUN node scripts/rebrand.mjs
 
 RUN touch config/DOCKER && \
   echo "{\"commitTag\": \"${COMMIT_TAG}\"}" > committag.json

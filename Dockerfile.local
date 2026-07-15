@@ -9,4 +9,6 @@ WORKDIR /app
 
 RUN pnpm install
 
+# No rebrand step here: compose.yaml bind-mounts the host checkout over /app,
+# which would shadow any image-layer branding. See branding/README.md.
 CMD pnpm dev
