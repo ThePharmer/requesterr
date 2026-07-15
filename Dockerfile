@@ -58,7 +58,7 @@ ARG COMMIT_TAG
 ENV NODE_ENV=production
 ENV COMMIT_TAG=${COMMIT_TAG}
 
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata tini
 
 USER node:node
 
@@ -77,5 +77,9 @@ RUN touch config/DOCKER && \
   echo "{\"commitTag\": \"${COMMIT_TAG}\"}" > committag.json
 
 EXPOSE 5055
+
+# Bundled init (upstream expects docker run --init / compose init: true).
+# Reaps zombies and forwards signals past npm; do NOT also set init: true.
+ENTRYPOINT ["/sbin/tini", "--"]
 
 CMD [ "npm", "start" ]
